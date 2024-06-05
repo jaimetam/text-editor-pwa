@@ -43,7 +43,7 @@ module.exports = () => {
         inject: true,
       }),
       new InjectManifest({
-        swSrc: path.resolve(__dirname, './src-sw.js'),
+        swSrc:  './src-sw.js',
         swDest: 'service-worker.js',
       }),
       // Add CSS extraction and Babel transpilation plugins
