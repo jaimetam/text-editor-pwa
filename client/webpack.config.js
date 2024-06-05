@@ -1,9 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
-const { GenerateSW, InjectManifest } = require('workbox-webpack-plugin');
+const {  InjectManifest } = require('workbox-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // For CSS extraction
-const BabelLoader = require('babel-loader'); // For Babel transpilation
+
 
 /// TODO: Add and configure workbox plugins for a service worker and manifest file.
 module.exports = () => {
@@ -32,24 +32,19 @@ module.exports = () => {
 				publicPath: '/',
         icons: [
           {
-            src: path.resolve(__dirname, './src/images/logo.png'), 
+            src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
-            type: 'image/png',
+            destination: path.join('assets', 'icons'),
           },
         ],
         start_url: '/', // Adjust if your index file has a different name
         display: 'standalone',
         orientation: 'portrait',
         inject: true,
-        fingerprints: false, // Prevent automatic injection by Workbox (handled by InjectManifest)
-      }),
-      new GenerateSW({
-        clientsClaim: true,
-        skipWaiting: true,
       }),
       new InjectManifest({
-        swSrc: './src-sw.js',
-				swDest: 'src-sw.js',
+        swSrc: path.resolve(__dirname, './src-sw.js'),
+        swDest: 'service-worker.js',
       }),
       // Add CSS extraction and Babel transpilation plugins
       new MiniCssExtractPlugin({
@@ -76,3 +71,6 @@ module.exports = () => {
     },
   };
 };
+
+
+

@@ -1,11 +1,16 @@
-const { offlineFallback, warmStrategyCache } = require('workbox-recipes');
+const {  warmStrategyCache } = require('workbox-recipes');
 const { CacheFirst } = require('workbox-strategies');
 const { registerRoute } = require('workbox-routing');
 const { CacheableResponsePlugin } = require('workbox-cacheable-response');
 const { ExpirationPlugin } = require('workbox-expiration');
-const { precacheAndRoute } = require('workbox-precaching/precacheAndRoute');
+const { PreCacheAndRoute } = require('workbox-precaching/precacheAndRoute');
+const { StaleWhileRevalidate } = require('workbox-strategies');
 
-precacheAndRoute(self.__WB_MANIFEST);
+try {
+  PreCacheAndRoute(self.__WB_MANIFEST);
+} catch (error) {
+  console.error('PreCaching error:', error);
+}
 
 const pageCache = new CacheFirst({
   cacheName: 'page-cache',
@@ -38,4 +43,4 @@ registerRoute(
   })
 );
 // TODO: Implement asset caching
-registerRoute();
+
